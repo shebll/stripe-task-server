@@ -14,7 +14,6 @@ const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
 // Initialize Firebase Admin SDK with the service account
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://your-project-id.firebaseio.com", // Optional, if using Firebase Realtime DB
 });
 
 const db = admin.firestore();
@@ -22,7 +21,13 @@ const db = admin.firestore();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
