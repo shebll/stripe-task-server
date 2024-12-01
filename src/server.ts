@@ -1,4 +1,3 @@
-const serviceAccount = require("./config/serviceAccountKey.json");
 import express, { Request, Response } from "express";
 import cors from "cors";
 import stripe from "stripe";
@@ -11,7 +10,11 @@ const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-11-20.acacia",
 });
 
-// Initialize Firebase Admin SDK with the service account
+const serviceAccount = {
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  privateKey: process.env.FIREBASE_PRIVATE_KEY,
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+};
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
