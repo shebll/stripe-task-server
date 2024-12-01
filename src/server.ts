@@ -23,7 +23,6 @@ const db = admin.firestore();
 
 const app = express();
 
-// Middleware
 app.use(
   cors({
     origin: process.env.VITE_API_URL,
@@ -180,66 +179,10 @@ app.post(
     }
   }
 );
-// // app.post(
-// //   "/webhook",
-// //   express.raw({ type: "application/json" }),
-// //   async (req: Request, res: Response) => {
-// //     const sig = req.headers["stripe-signature"]!;
-// //     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-// //     const payload = req.body;
-
-// //     if (!sig) {
-// //       console.error("No Stripe signature found in headers");
-// //       res.status(400).send("Missing signature");
-// //     }
-
-// //     if (!endpointSecret) {
-// //       console.error(
-// //         "Stripe webhook secret is not set in environment variables"
-// //       );
-// //       res.status(500).send("Server configuration error");
-// //     }
-
-// //     try {
-// //       const event = stripeClient.webhooks.constructEvent(
-// //         req.body, // Use req.body directly instead of payload
-// //         sig,
-// //         endpointSecret
-// //       );
-// //       console.log("Webhook received event ");
-
-// //       // if (event.type === "checkout.session.completed") {
-// //       //   const session = event.data.object; // The session object from Stripe
-
-// //       //   // Retrieve the user profile from Firestore
-// //       //   const userId = session.client_reference_id;
-// //       //   const userRef = db.collection("users").doc(userId);
-// //       //   const userDoc = await userRef.get();
-
-// //       //   if (userDoc.exists) {
-// //       //     // Update the user's profile to "pro" status
-// //       //     await userRef.update({
-// //       //       isPro: true,
-// //       //       stripeCustomerId: session.customer,
-// //       //       subscriptionId: session.subscription,
-// //       //     });
-// //       //     console.log("User profile updated to Pro");
-// //       //   } else {
-// //       //     console.log("User not found in database");
-// //       //   }
-// //       // }
-
-// //       res.status(200).send("Webhook handled");
-// //     } catch (err) {
-// //       console.error("Error handling webhook", err);
-// //       res.status(400).send("Webhook Error");
-// //     }
-// //   }
-// // );
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => {
-//   console.log(`Server is running on port ${PORT}`);
-// });
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 export default (req: any, res: any) => {
   app(req, res);
