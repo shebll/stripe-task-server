@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import * as admin from "firebase-admin";
 dotenv.config();
 
-// Initialize Stripe with your secret key
 const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-11-20.acacia",
 });
@@ -59,6 +58,7 @@ app.post("/create-checkout", async (req: Request, res: Response) => {
         },
       ],
       mode: "subscription",
+      customer: userId,
       customer_email: email,
       client_reference_id: userId,
       success_url: `${process.env.CLIENT_URL}/payment-success`,
@@ -93,6 +93,7 @@ app.post("/create-checkout-intent", async (req: Request, res: Response) => {
         email: email,
         subscriptionType: "pro-monthly",
       },
+      customer: userId,
     });
     res.json({
       clientSecret: paymentIntent.client_secret,
@@ -139,8 +140,8 @@ app.post(
           if (userDoc.exists) {
             await userRef.update({
               isPro: true,
-              // stripeCustomerId: session.customer,
-              // subscriptionId: session.subscription,
+              stripeCustomerId: session.customer || null,
+              paymentIntentId: session.payment_intent,
             });
             console.log("User profile updated to Pro");
           } else {
