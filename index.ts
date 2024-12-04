@@ -55,14 +55,14 @@ app.use(
 
 app.options("*", cors());
 
-app.use("/webhook", express.raw({ type: "application/json" }));
+app.use("/api/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/api/", (req: Request, res: Response) => {
   res.send("Hello, Express!");
 });
 
-app.post("/create-checkout", async (req: Request, res: Response) => {
+app.post("/api/create-checkout", async (req: Request, res: Response) => {
   const { userId, email } = req.body;
   try {
     const session = await stripeClient.checkout.sessions.create({
@@ -101,7 +101,7 @@ app.post("/create-checkout", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/create-checkout-intent", async (req: Request, res: Response) => {
+app.post("/api/create-checkout-intent", async (req: Request, res: Response) => {
   const { userId, email } = req.body;
   if (!userId || !email) {
     res.status(400).json({ error: "User ID and email are required" });
@@ -133,9 +133,9 @@ app.post("/create-checkout-intent", async (req: Request, res: Response) => {
     });
   }
 });
-// app.use("/webhook", express.raw({ type: "application/json" }));
+// app.use("/api/webhook", express.raw({ type: "application/json" }));
 // app.post(
-//   "/webhook",
+//   "/api/webhook",
 //   express.raw({ type: "application/json" }), // This is crucial
 //   async (req: Request, res: Response) => {
 //     const sig = req.headers["stripe-signature"] as string;
