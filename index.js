@@ -1,14 +1,14 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
-import stripe from "stripe";
-import dotenv from "dotenv";
-import * as admin from "firebase-admin";
-dotenv.config();
-
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 // const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
 //   apiVersion: "2024-11-20.acacia",
 // });
-
 // const serviceAccount = {
 //   projectId: process.env.FIREBASE_PROJECT_ID,
 //   privateKey: process.env.FIREBASE_PRIVATE_KEY,
@@ -18,8 +18,7 @@ dotenv.config();
 //   credential: admin.credential.cert(serviceAccount),
 // });
 // const db = admin.firestore();
-
-const app = express();
+const app = (0, express_1.default)();
 //
 // app.use(
 //   cors({
@@ -29,12 +28,10 @@ const app = express();
 //   })
 // );
 // app.use("/webhook", express.raw({ type: "application/json" }));
-app.use(express.json());
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, Express!");
+app.use(express_1.default.json());
+app.get("/", (req, res) => {
+    res.send("Hello, Express!");
 });
-
 // app.post("/create-checkout", async (req: Request, res: Response) => {
 //   const { userId, email } = req.body;
 //   try {
@@ -66,14 +63,12 @@ app.get("/", (req: Request, res: Response) => {
 //         userId: userId,
 //       },
 //     });
-
 //     res.json({ url: session.url });
 //   } catch (error) {
 //     console.error("Error creating checkout session:", error);
 //     res.status(500).send("Internal Server Error");
 //   }
 // });
-
 // app.post("/create-checkout-intent", async (req: Request, res: Response) => {
 //   const { userId, email } = req.body;
 //   if (!userId || !email) {
@@ -114,7 +109,6 @@ app.get("/", (req: Request, res: Response) => {
 //     const sig = req.headers["stripe-signature"] as string;
 //     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 //     const rawBody = req.body;
-
 //     try {
 //       const event = stripeClient.webhooks.constructEvent(
 //         rawBody,
@@ -127,7 +121,6 @@ app.get("/", (req: Request, res: Response) => {
 //           // console.log("Payment Intent created:", paymentIntent.id);
 //           console.log("Payment Intent created:", paymentIntent);
 //           break;
-
 //         case "charge.succeeded": {
 //           const session = event.data.object;
 //           console.log("Checkout session completed:", session);
@@ -148,7 +141,6 @@ app.get("/", (req: Request, res: Response) => {
 //           }
 //           break;
 //         }
-
 //         case "charge.updated": {
 //           const session = event.data.object;
 //           // console.log("Checkout session completed:", session.id);
@@ -171,7 +163,6 @@ app.get("/", (req: Request, res: Response) => {
 //         default:
 //           console.log(`Unhandled event type ${event.type}`);
 //       }
-
 //       res.status(200).send("Webhook handled successfully");
 //     } catch (err) {
 //       console.error("Webhook Error:", err);
@@ -181,9 +172,8 @@ app.get("/", (req: Request, res: Response) => {
 // );
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });
-
-export default (req: any, res: any) => {
-  app(req, res);
+exports.default = (req, res) => {
+    app(req, res);
 };
