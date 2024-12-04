@@ -46,23 +46,21 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://curious-cranachan-ab9992.netlify.app", // Frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"], // Explicitly allow required headers
+    origin: "https://curious-cranachan-ab9992.netlify.app",
     credentials: true,
   })
 );
 
-app.options("*", cors());
+// app.options("*", cors());
 
-app.use("/api/webhook", express.raw({ type: "application/json" }));
+app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
-app.get("/api/", (req: Request, res: Response) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("Hello, Express!");
 });
 
-app.post("/api/create-checkout", async (req: Request, res: Response) => {
+app.post("/create-checkout", async (req: Request, res: Response) => {
   const { userId, email } = req.body;
   try {
     const session = await stripeClient.checkout.sessions.create({
@@ -101,7 +99,7 @@ app.post("/api/create-checkout", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/api/create-checkout-intent", async (req: Request, res: Response) => {
+app.post("/create-checkout-intent", async (req: Request, res: Response) => {
   const { userId, email } = req.body;
   if (!userId || !email) {
     res.status(400).json({ error: "User ID and email are required" });
@@ -133,9 +131,9 @@ app.post("/api/create-checkout-intent", async (req: Request, res: Response) => {
     });
   }
 });
-// app.use("/api/webhook", express.raw({ type: "application/json" }));
+// app.use("/webhook", express.raw({ type: "application/json" }));
 // app.post(
-//   "/api/webhook",
+//   "/webhook",
 //   express.raw({ type: "application/json" }), // This is crucial
 //   async (req: Request, res: Response) => {
 //     const sig = req.headers["stripe-signature"] as string;
