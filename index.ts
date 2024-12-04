@@ -21,21 +21,38 @@ const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
 
 const app = express();
 
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://curious-cranachan-ab9992.netlify.app"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://curious-cranachan-ab9992.netlify.app"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
 
-app.use(cors({ origin: "https://curious-cranachan-ab9992.netlify.app" }));
+// app.use(
+//   cors({
+//     origin: "https://curious-cranachan-ab9992.netlify.app",
+//     credentials: true,
+//     allowedHeaders: "*",
+//   })
+// );
+// app.options("*", cors());
+
+app.use(
+  cors({
+    origin: "https://curious-cranachan-ab9992.netlify.app", // Frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"], // Explicitly allow required headers
+    credentials: true,
+  })
+);
+
 app.options("*", cors());
 
 app.use("/webhook", express.raw({ type: "application/json" }));
