@@ -59,7 +59,6 @@ const corsOptions = {
   origin: "https://curious-cranachan-ab9992.netlify.app", // Exact origin of your frontend
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: false,
   optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 // Apply CORS middleware
