@@ -35,23 +35,37 @@ const app = express();
 //   next();
 // });
 
+// // app.use(
+// //   cors({
+// //     origin: "https://curious-cranachan-ab9992.netlify.app",
+// //     credentials: true,
+// //     allowedHeaders: "*",
+// //   })
+// // );
+// // app.options("*", cors());
+
 // app.use(
 //   cors({
-//     origin: "https://curious-cranachan-ab9992.netlify.app",
+//     origin: "*",
 //     credentials: true,
-//     allowedHeaders: "*",
 //   })
 // );
-// app.options("*", cors());
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
+// // app.options("*", cors());
 
-// app.options("*", cors());
+// Specific CORS configuration
+
+const corsOptions = {
+  origin: "https://curious-cranachan-ab9992.netlify.app", // Exact origin of your frontend
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200, // Some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+// Apply CORS middleware
+app.use(cors(corsOptions));
+// Optional: Handle preflight requests explicitly
+app.options("*", cors(corsOptions));
 
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
