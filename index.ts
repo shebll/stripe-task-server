@@ -46,7 +46,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://curious-cranachan-ab9992.netlify.app",
+    origin: "*",
     credentials: true,
   })
 );
@@ -117,7 +117,7 @@ app.post("/create-checkout-intent", async (req: Request, res: Response) => {
         email: email,
         subscriptionType: "pro-monthly",
       },
-      customer: userId,
+      // customer: userId,
     });
     res.json({
       clientSecret: paymentIntent.client_secret,

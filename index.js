@@ -30,14 +30,32 @@ const stripeClient = new stripe_1.default(process.env.STRIPE_SECRET_KEY, {
 // });
 // const db = admin.firestore();
 const app = (0, express_1.default)();
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://curious-cranachan-ab9992.netlify.app");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    next();
-});
-app.options("*", (0, cors_1.default)());
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Access-Control-Allow-Origin",
+//     "https://curious-cranachan-ab9992.netlify.app"
+//   );
+//   res.setHeader(
+//     "Access-Control-Allow-Methods",
+//     "GET, POST, PUT, DELETE, OPTIONS"
+//   );
+//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
+// app.use(
+//   cors({
+//     origin: "https://curious-cranachan-ab9992.netlify.app",
+//     credentials: true,
+//     allowedHeaders: "*",
+//   })
+// );
+// app.options("*", cors());
+app.use((0, cors_1.default)({
+    origin: "*",
+    credentials: true,
+}));
+// app.options("*", cors());
 app.use("/webhook", express_1.default.raw({ type: "application/json" }));
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
@@ -99,7 +117,7 @@ app.post("/create-checkout-intent", (req, res) => __awaiter(void 0, void 0, void
                 email: email,
                 subscriptionType: "pro-monthly",
             },
-            customer: userId,
+            // customer: userId,
         });
         res.json({
             clientSecret: paymentIntent.client_secret,
