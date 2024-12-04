@@ -35,6 +35,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use(cors({ origin: "https://curious-cranachan-ab9992.netlify.app" }));
 app.options("*", cors());
 
 app.use("/webhook", express.raw({ type: "application/json" }));

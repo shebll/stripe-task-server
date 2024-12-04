@@ -1,5 +1,13 @@
 {
   "version": 2,
   "builds": [{ "src": "./index.ts", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/index.js" }]
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.js",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://curious-cranachan-ab9992.netlify.app"
+      }
+    }
+  ]
 }
