@@ -55,9 +55,10 @@ const app = express();
 
 // Specific CORS configuration
 
-// const corsOptions = {
-//   origin: "https://curious-cranachan-ab9992.netlify.app",
-// };
+const corsOptions = {
+  origin: "https://curious-cranachan-ab9992.netlify.app",
+  methods: ["GET", "POST", "OPTIONS"],
+};
 // Apply CORS middleware
 app.use(
   cors({
@@ -65,7 +66,7 @@ app.use(
   })
 );
 // Optional: Handle preflight requests explicitly
-// app.options("*", cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
