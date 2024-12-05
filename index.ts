@@ -55,18 +55,19 @@ const app = express();
 
 // Specific CORS configuration
 
-const corsOptions = {
-  origin: "*",
-  methods: ["GET", "POST", "OPTIONS"],
-};
+// const corsOptions = {
+//   origin: "*",
+//   methods: ["GET", "POST", "OPTIONS"],
+// };
 // Apply CORS middleware
 app.use(
   cors({
     origin: "*",
+    methods: ["GET", "POST", "OPTIONS"],
   })
 );
 // Optional: Handle preflight requests explicitly
-app.options("*", cors(corsOptions));
+// app.options("*", cors(corsOptions));
 
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
