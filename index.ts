@@ -56,7 +56,7 @@ const app = express();
 // Specific CORS configuration
 
 const corsOptions = {
-  origin: "https://curious-cranachan-ab9992.netlify.app",
+  origin: "*",
   methods: ["GET", "POST", "OPTIONS"],
 };
 // Apply CORS middleware
