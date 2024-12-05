@@ -45,8 +45,11 @@ app.options("*", cors());
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
-app.post("/", (req: Request, res: Response) => {
-  res.send("Hello, Express!");
+app.post("/create-checkout-intent", (req: Request, res: Response) => {
+  res.json({
+    clientSecret: "paymentIntent.client_secret",
+    paymentIntentId: "paymentIntent.id",
+  });
 });
 
 app.post("/create-checkout", async (req: Request, res: Response) => {
@@ -88,43 +91,43 @@ app.post("/create-checkout", async (req: Request, res: Response) => {
   }
 });
 
-app.post("/create-checkout-intent", async (req: Request, res: Response) => {
-  // const { userId, email } = req.body;
-  // if (!userId || !email) {
-  //   res.status(400).json({ error: "User ID and email are required" });
-  //   return;
-  // }
-  // try {
-  //   // const paymentIntent = await stripeClient.paymentIntents.create({
-  //   //   amount: 3000,
-  //   //   currency: "usd",
-  //   //   automatic_payment_methods: {
-  //   //     enabled: true,
-  //   //   },
-  //   //   metadata: {
-  //   //     userId: userId,
-  //   //     email: email,
-  //   //     subscriptionType: "pro-monthly",
-  //   //   },
-  //   //   // customer: userId,
-  //   // });
-  //   // res.json({
-  //   //   clientSecret: paymentIntent.client_secret,
-  //   //   paymentIntentId: paymentIntent.id,
-  //   // });
-  // } catch (error) {
-  //   console.error("Error creating payment intent:", error);
-  //   res.status(500).json({
-  //     error: "Failed to create payment intent",
-  //     details: error,
-  //   });
-  // }
+// app.post("/create-checkout-intent", async (req: Request, res: Response) => {
+//   // const { userId, email } = req.body;
+//   // if (!userId || !email) {
+//   //   res.status(400).json({ error: "User ID and email are required" });
+//   //   return;
+//   // }
+//   // try {
+//   //   // const paymentIntent = await stripeClient.paymentIntents.create({
+//   //   //   amount: 3000,
+//   //   //   currency: "usd",
+//   //   //   automatic_payment_methods: {
+//   //   //     enabled: true,
+//   //   //   },
+//   //   //   metadata: {
+//   //   //     userId: userId,
+//   //   //     email: email,
+//   //   //     subscriptionType: "pro-monthly",
+//   //   //   },
+//   //   //   // customer: userId,
+//   //   // });
+//   //   // res.json({
+//   //   //   clientSecret: paymentIntent.client_secret,
+//   //   //   paymentIntentId: paymentIntent.id,
+//   //   // });
+//   // } catch (error) {
+//   //   console.error("Error creating payment intent:", error);
+//   //   res.status(500).json({
+//   //     error: "Failed to create payment intent",
+//   //     details: error,
+//   //   });
+//   // }
 
-  res.json({
-    clientSecret: "paymentIntent.client_secret",
-    paymentIntentId: "paymentIntent.id",
-  });
-});
+//   res.json({
+//     clientSecret: "paymentIntent.client_secret",
+//     paymentIntentId: "paymentIntent.id",
+//   });
+// });
 // app.use("/webhook", express.raw({ type: "application/json" }));
 // app.post(
 //   "/webhook",
