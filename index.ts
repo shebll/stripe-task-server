@@ -9,15 +9,15 @@ const stripeClient = new stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-11-20.acacia",
 });
 
-const serviceAccount = {
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  privateKey: process.env.FIREBASE_PRIVATE_KEY,
-  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-};
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-const db = admin.firestore();
+// const serviceAccount = {
+//   projectId: process.env.FIREBASE_PROJECT_ID,
+//   privateKey: process.env.FIREBASE_PRIVATE_KEY,
+//   clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+// };
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
+// const db = admin.firestore();
 
 const app = express();
 
@@ -120,79 +120,79 @@ app.post("/create-checkout-intent", async (req: Request, res: Response) => {
     });
   }
 });
-app.use("/webhook", express.raw({ type: "application/json" }));
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }), // This is crucial
-  async (req: Request, res: Response) => {
-    const sig = req.headers["stripe-signature"] as string;
-    const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-    const rawBody = req.body;
+// app.use("/webhook", express.raw({ type: "application/json" }));
+// app.post(
+//   "/webhook",
+//   express.raw({ type: "application/json" }), // This is crucial
+//   async (req: Request, res: Response) => {
+//     const sig = req.headers["stripe-signature"] as string;
+//     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+//     const rawBody = req.body;
 
-    try {
-      const event = stripeClient.webhooks.constructEvent(
-        rawBody,
-        sig,
-        endpointSecret
-      );
-      switch (event.type) {
-        case "payment_intent.created":
-          const paymentIntent = event.data.object;
-          // console.log("Payment Intent created:", paymentIntent.id);
-          console.log("Payment Intent created:", paymentIntent);
-          break;
+//     try {
+//       const event = stripeClient.webhooks.constructEvent(
+//         rawBody,
+//         sig,
+//         endpointSecret
+//       );
+//       switch (event.type) {
+//         case "payment_intent.created":
+//           const paymentIntent = event.data.object;
+//           // console.log("Payment Intent created:", paymentIntent.id);
+//           console.log("Payment Intent created:", paymentIntent);
+//           break;
 
-        case "charge.succeeded": {
-          const session = event.data.object;
-          console.log("Checkout session completed:", session);
-          const userId = session.metadata.userId;
-          if (!userId) break;
-          const userRef = db.collection("users").doc(userId);
-          const userDoc = await userRef.get();
-          console.log("User document:", userDoc.data());
-          if (userDoc.exists) {
-            await userRef.update({
-              isPro: true,
-              stripeCustomerId: session.customer || null,
-              paymentIntentId: session.payment_intent,
-            });
-            console.log("User profile updated to Pro");
-          } else {
-            console.log("User not found in database");
-          }
-          break;
-        }
+//         case "charge.succeeded": {
+//           const session = event.data.object;
+//           console.log("Checkout session completed:", session);
+//           const userId = session.metadata.userId;
+//           if (!userId) break;
+//           const userRef = db.collection("users").doc(userId);
+//           const userDoc = await userRef.get();
+//           console.log("User document:", userDoc.data());
+//           if (userDoc.exists) {
+//             await userRef.update({
+//               isPro: true,
+//               stripeCustomerId: session.customer || null,
+//               paymentIntentId: session.payment_intent,
+//             });
+//             console.log("User profile updated to Pro");
+//           } else {
+//             console.log("User not found in database");
+//           }
+//           break;
+//         }
 
-        case "charge.updated": {
-          const session = event.data.object;
-          // console.log("Checkout session completed:", session.id);
-          console.log("Checkout session completed:", session);
-          // const userId = session.cu;
-          // const userRef = db.collection("users").doc(userId);
-          // const userDoc = await userRef.get();
-          // if (userDoc.exists) {
-          //   await userRef.update({
-          //     isPro: true,
-          //     stripeCustomerId: session.customer,
-          //     subscriptionId: session.subscription,
-          //   });
-          //   console.log("User profile updated to Pro");
-          // } else {
-          //   console.log("User not found in database");
-          // }
-          break;
-        }
-        default:
-          console.log(`Unhandled event type ${event.type}`);
-      }
+//         case "charge.updated": {
+//           const session = event.data.object;
+//           // console.log("Checkout session completed:", session.id);
+//           console.log("Checkout session completed:", session);
+//           // const userId = session.cu;
+//           // const userRef = db.collection("users").doc(userId);
+//           // const userDoc = await userRef.get();
+//           // if (userDoc.exists) {
+//           //   await userRef.update({
+//           //     isPro: true,
+//           //     stripeCustomerId: session.customer,
+//           //     subscriptionId: session.subscription,
+//           //   });
+//           //   console.log("User profile updated to Pro");
+//           // } else {
+//           //   console.log("User not found in database");
+//           // }
+//           break;
+//         }
+//         default:
+//           console.log(`Unhandled event type ${event.type}`);
+//       }
 
-      res.status(200).send("Webhook handled successfully");
-    } catch (err) {
-      console.error("Webhook Error:", err);
-      res.status(400).send(`Webhook Error: ${err}`);
-    }
-  }
-);
+//       res.status(200).send("Webhook handled successfully");
+//     } catch (err) {
+//       console.error("Webhook Error:", err);
+//       res.status(400).send(`Webhook Error: ${err}`);
+//     }
+//   }
+// );
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
