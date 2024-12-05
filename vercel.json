@@ -4,12 +4,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.js"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/create-checkout-intent",
+      "dest": "/index.js",
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
