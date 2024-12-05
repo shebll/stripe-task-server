@@ -45,7 +45,7 @@ app.options("*", cors());
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
 
-app.post("/create-checkout-intent", (req: Request, res: Response) => {
+app.get("/create-checkout-intent", (req: Request, res: Response) => {
   res.status(200);
   res.json({
     clientSecret: "paymentIntent.client_secret",
