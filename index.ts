@@ -21,53 +21,26 @@ const db = admin.firestore();
 
 const app = express();
 
-// app.use((req, res, next) => {
-//   res.setHeader(
-//     "Access-Control-Allow-Origin",
-//     "https://curious-cranachan-ab9992.netlify.app"
-//   );
-//   res.setHeader(
-//     "Access-Control-Allow-Methods",
-//     "GET, POST, PUT, DELETE, OPTIONS"
-//   );
-//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-//   res.setHeader("Access-Control-Allow-Credentials", "true");
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://curious-cranachan-ab9992.netlify.app"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 
-// // app.use(
-// //   cors({
-// //     origin: "https://curious-cranachan-ab9992.netlify.app",
-// //     credentials: true,
-// //     allowedHeaders: "*",
-// //   })
-// // );
-// // app.options("*", cors());
-
-// app.use(
-//   cors({
-//     origin: "*",
-//     credentials: true,
-//   })
-// );
-
-// // app.options("*", cors());
-
-// Specific CORS configuration
-
-// const corsOptions = {
-//   origin: "*",
-//   methods: ["GET", "POST", "OPTIONS"],
-// };
-// Apply CORS middleware
 app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: "*",
   })
 );
-// Optional: Handle preflight requests explicitly
-// app.options("*", cors(corsOptions));
 
 app.use("/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
