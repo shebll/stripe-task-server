@@ -95,23 +95,23 @@ app.post("/create-checkout-intent", async (req: Request, res: Response) => {
     return;
   }
   try {
-    const paymentIntent = await stripeClient.paymentIntents.create({
-      amount: 3000,
-      currency: "usd",
-      automatic_payment_methods: {
-        enabled: true,
-      },
-      metadata: {
-        userId: userId,
-        email: email,
-        subscriptionType: "pro-monthly",
-      },
-      // customer: userId,
-    });
-    res.json({
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
-    });
+    // const paymentIntent = await stripeClient.paymentIntents.create({
+    //   amount: 3000,
+    //   currency: "usd",
+    //   automatic_payment_methods: {
+    //     enabled: true,
+    //   },
+    //   metadata: {
+    //     userId: userId,
+    //     email: email,
+    //     subscriptionType: "pro-monthly",
+    //   },
+    //   // customer: userId,
+    // });
+    // res.json({
+    //   clientSecret: paymentIntent.client_secret,
+    //   paymentIntentId: paymentIntent.id,
+    // });
   } catch (error) {
     console.error("Error creating payment intent:", error);
     res.status(500).json({
