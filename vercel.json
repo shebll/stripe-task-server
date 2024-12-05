@@ -6,7 +6,7 @@
       "src": "/(.*)",
       "dest": "/index.js",
       "headers": {
-        "Access-Control-Allow-Origin": "https://curious-cranachan-ab9992.netlify.app"
+        "Access-Control-Allow-Origin": "*"
       }
     }
   ]
